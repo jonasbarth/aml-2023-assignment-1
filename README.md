@@ -14,3 +14,16 @@ Run the `get_datasets.sh` script.
 ```
 bash get_datasets.sh
 ```
+
+# How to run
+For **exercise 1**:
+
+```bash
+python ex2_FCnet.py
+```
+
+For **exercise 2**:
+
+```bash
+python ex2_pytorch.py
+```
