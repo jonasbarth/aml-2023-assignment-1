@@ -122,8 +122,11 @@ class TwoLayerNet(object):
         # Implement the loss for the softmax output layer
 
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+
+        # the regularisation coefficient times the sum of squared norms for both weight matrices
         reg_term = reg * (np.linalg.norm(W1) ** 2 + np.linalg.norm(W2) ** 2)
 
+        # take the log of all the predicted scores for the correct classes y
         loss = np.mean(-np.log(scores[range(N), y])) + reg_term
         
         pass
