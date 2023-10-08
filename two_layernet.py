@@ -51,6 +51,23 @@ class TwoLayerNet(object):
         self.params['W2'] = std * np.random.randn(hidden_size, output_size)
         self.params['b2'] = np.zeros(output_size)
 
+    @staticmethod
+    def relu(X):
+        X[X < 0] = 0
+        return X
+
+    @staticmethod
+    def softmax(X):
+        return np.exp(X) / np.sum(np.exp(X), axis=1, keepdims=True)
+
+    def forward(self, X):
+        z2 = np.matmul(X, self.params["W1"]) + self.params["b1"]
+        a2 = self.relu(z2)
+        z3 = np.matmul(a2, self.params["W2"]) + self.params["b2"]
+        scores = self.softmax(z3)
+
+        return scores
+
     def loss(self, X, y=None, reg=0.0):
         """
         Compute the loss and gradients for a two-layer fully connected neural
@@ -91,17 +108,7 @@ class TwoLayerNet(object):
 
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        def relu(X):
-            X[X < 0] = 0
-            return X
-
-        def softmax(X):
-            return np.exp(X) / np.sum(np.exp(X), axis=1, keepdims=True)
-
-        z2 = np.matmul(X, W1) + b1
-        a2 = relu(z2)
-        z3 = np.matmul(a2, W2) + b2
-        scores = softmax(z3)
+        scores = self.forward(X)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -128,8 +135,6 @@ class TwoLayerNet(object):
 
         # take the log of all the predicted scores for the correct classes y
         loss = np.mean(-np.log(scores[range(N), y])) + reg_term
-        
-        pass
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -255,7 +260,8 @@ class TwoLayerNet(object):
 
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        scores = self.forward(X)
+        y_pred = np.max(scores, axis=1)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
