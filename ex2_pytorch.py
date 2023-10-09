@@ -112,7 +112,13 @@ class MultiLayerPerceptron(nn.Module):
         
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        
+        for in_size, outsize in zip([input_size, *hidden_layers], [*hidden_layers, num_classes]):
+            layers.append(nn.Linear(in_size, outsize))
+            layers.append(nn.ReLU())
+
+        # the last layer cannot be a ReLU
+        if isinstance(layers[-1], nn.ReLU):
+            layers.pop(-1)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -130,7 +136,7 @@ class MultiLayerPerceptron(nn.Module):
         
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-
+        out = self.layers.forward(torch.flatten(x, start_dim=1, end_dim=-1))
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         
@@ -169,7 +175,18 @@ if train:
             #################################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
+            # get the model output
+            pred = model.forward(images)
 
+            # calculate the loss using the criterion object
+            loss = criterion.forward(pred, labels)
+
+            # compute gradients
+            loss.backward()
+
+            # update model parameters
+            optimizer.step()
+            optimizer.zero_grad()
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -193,7 +210,11 @@ if train:
                 ####################################################
                 # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-            
+                # do a forward pass to get the output
+                out = model.forward(images)
+
+                # get the predicted class for each row in the output (dim=1) and get the
+                predicted = out.max(dim=1)[1]
 
                 # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
                 total += labels.size(0)
