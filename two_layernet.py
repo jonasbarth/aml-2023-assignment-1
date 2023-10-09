@@ -196,7 +196,9 @@ class TwoLayerNet(object):
 
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-            pass
+            batch_idx = np.random.randint(0, num_train, batch_size)
+            X_batch = X[batch_idx]
+            y_batch = y[batch_idx]
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -213,7 +215,8 @@ class TwoLayerNet(object):
 
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-            pass
+            self.params["W1"] -= learning_rate * grads["W1"]
+            self.params["W2"] -= learning_rate * grads["W2"]
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
